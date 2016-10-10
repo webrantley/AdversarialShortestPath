@@ -16,6 +16,7 @@ public class Kmeans {
         startSet = new HashSet<>();
         endSet = new HashSet<>();
     }
+
     public int findNewCentroid(Set<Integer> cluster){
         int sum = Integer.MAX_VALUE;
         int target = 0;
@@ -33,6 +34,7 @@ public class Kmeans {
         }
         return target;
     }
+
     public void clustering(int start, int end){
         int rawStart = start;
         int rawEnd = end;
@@ -61,7 +63,6 @@ public class Kmeans {
                 }
 
             }
-            System.out.printf("%d %d\n", startSet.size(),endSet.size());
             int newStart,newEnd;
             newStart = findNewCentroid(startSet);
             newEnd = findNewCentroid(endSet);

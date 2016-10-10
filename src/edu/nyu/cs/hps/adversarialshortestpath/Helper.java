@@ -17,4 +17,27 @@ public class Helper {
         }
         return adjacentTable;
     }
+
+    public static int countBridges(int[][] map, Set<Integer> startSet, Set<Integer> endSet){
+        int count = 0;
+        for(Integer i : startSet){
+            for(Integer j : endSet){
+                if(map[i][j] != 0){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public static int countPathNum(ArrayList<HashSet<Integer>> prevs, int current){
+        if(prevs.get(current).isEmpty()){
+            return 1;
+        }
+        int count = 0;
+        for(Integer preve : prevs.get(current)){
+            count += countPathNum(prevs, preve);
+        }
+        return count;
+    }
 }

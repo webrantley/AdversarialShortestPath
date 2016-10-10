@@ -9,12 +9,19 @@ public class ShortestPathAlgorithm {
 
     public static int[][] floyd(int[][] adjacencyMatrix) {
         int n = adjacencyMatrix.length;
-        int[][] d = adjacencyMatrix.clone();
+        int[][] d = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    if (d[i][j] > d[i][k] + d[k][j]) {
-                        d[i][j] = d[i][k] + d[k][j];
+                d[i][j] = adjacencyMatrix[i][j];
+            }
+        }
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (d[i][k]!= 0 && d[k][j] != 0) {
+                        if(d[i][j] == 0 || d[i][j] > d[i][k] + d[k][j]) {
+                            d[i][j] = d[i][k] + d[k][j];
+                        }
                     }
                 }
             }
@@ -22,12 +29,12 @@ public class ShortestPathAlgorithm {
         return d;
     }
 
-    public static ArrayList<ArrayList<Integer>> dijkstra(int[][] map, int s){
+    public static ArrayList<HashSet<Integer>> dijkstra(int[][] map, int s){
         int n = map.length;
         int[] edges = Arrays.copyOf(map[s],n);
-        ArrayList<ArrayList<Integer>> prevs = new ArrayList<>();
+        ArrayList<HashSet<Integer>> prevs = new ArrayList<>();
         for(int i = 0; i < n; i++){
-            ArrayList<Integer> prev = new ArrayList<>();
+            HashSet<Integer> prev = new HashSet<>();
             prevs.add(prev);
         }
         Set<Integer> finishedSet = new HashSet<>();
@@ -36,6 +43,7 @@ public class ShortestPathAlgorithm {
             unfinishedSet.add(i);
         }
         int target = s;
+
         while(!unfinishedSet.isEmpty()){
             finishedSet.add(target);
             unfinishedSet.remove(target);
@@ -64,7 +72,6 @@ public class ShortestPathAlgorithm {
             if(breakFlag){
                 break;
             }
-
         }
         return prevs;
     }

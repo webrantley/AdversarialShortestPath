@@ -17,11 +17,11 @@ public class ASPFileReaderTest {
   
   @Test
   public void testASPFileReader() {
-    assertEquals(testReader.getNumberOfVertices(), new Integer(200));
+    assertEquals(testReader.getLargestVertex(), new Integer(200));
     assertEquals(testReader.getStartingVertex(), new Integer(165));
     assertEquals(testReader.getEndingVertex(), new Integer(157));
     
-    System.out.println(testReader.getNumberOfVertices());
+    System.out.println(testReader.getLargestVertex());
     
     int[][] adjMatrix = testReader.getAdjacencyMatrix();
     
