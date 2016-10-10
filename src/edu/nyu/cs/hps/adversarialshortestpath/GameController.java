@@ -26,6 +26,7 @@ class GameController {
   private Socket gameSocket;
   private PrintWriter outputStream;
   private BufferedReader inputStream;
+  private final ASPAI gameAI = null;
   
   GameController(Integer portNumber, String playType) throws IOException {
     this.portNumber = portNumber;
@@ -34,6 +35,18 @@ class GameController {
     endingVertex = Integer.parseInt(inputStream.readLine().split(": ")[1]);
     inputStream.readLine(); // Skip the Edges: line
     adjacencyMatrix = parseGraphData();
+    
+    if ("Player".equals(playType)) {
+      //Remove comments and replace ASPPlayer with name of your class
+      //gameAI = new ASPPlayer();
+    } else if ("Adversary".equals(playType)) {
+      //Remove comments and replace ASPAdversary with name of your class
+      //gameAI = new ASPAdversary();
+    } else {
+      throw new IllegalArgumentException("Unrecognized play type. Use Player or Adversary");
+    }
+    
+    listenForMoves();
   }
   
   GameController(String playType) throws IOException {
@@ -43,6 +56,18 @@ class GameController {
     endingVertex = Integer.parseInt(inputStream.readLine().split(": ")[1]);
     inputStream.readLine(); // Skip Edges: line
     adjacencyMatrix = parseGraphData();
+    
+    if ("Player".equals(playType)) {
+      //Remove comments and replace ASPPlayer with name of your class
+      //gameAI = new ASPPlayer();
+    } else if ("Adversary".equals(playType)) {
+      //Remove comments and replace ASPAdversary with name of your class
+      //gameAI = new ASPAdversary();
+    } else {
+      throw new IllegalArgumentException("Unrecognized play type. Use Player or Adversary");
+    }
+    
+    listenForMoves();
   }
   
   private void connectToSocket() {
@@ -54,6 +79,19 @@ class GameController {
     } catch (Exception notHandled) {
       notHandled.printStackTrace();
     }
+  }
+  
+  private void listenForMoves() throws IOException {
+    char[] incomingString = new char[1024];
+    String updateFromServer = null;
+    
+    while (!"$".equals(updateFromServer)) {
+      inputStream.read(incomingString, 0, 1024);
+      updateFromServer = new String(incomingString).trim();
+      writeToSocket(gameAI.makeMove(updateFromServer));
+    }
+    
+    endGame();
   }
   
   private int[][] parseGraphData() throws IOException {

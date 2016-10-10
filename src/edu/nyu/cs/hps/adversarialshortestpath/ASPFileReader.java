@@ -15,7 +15,7 @@ import java.io.IOException;
 class ASPFileReader {
   private final Integer startingVertex;
   private final Integer endingVertex;
-  private final Integer numberOfVertices;
+  private final Integer largestVertex;
   private final int[][] adjacencyMatrix;
   
   ASPFileReader(String path) throws FileNotFoundException, IOException {
@@ -25,14 +25,14 @@ class ASPFileReader {
     startingVertex = Integer.parseInt(firstPass.readLine().split(": ")[1]);
     endingVertex = Integer.parseInt(firstPass.readLine().split(": ")[1]);
     firstPass.readLine(); //Ignore Edges: line
-    numberOfVertices = findLargestVertex(firstPass) + 1;
+    largestVertex = findLargestVertex(firstPass);
     
     firstPass.close();
     firstFileReader.close();
     
     FileReader secondFileReader = new FileReader(path);
     BufferedReader secondPass = new BufferedReader(secondFileReader);
-    adjacencyMatrix = readEdgePairs(secondPass, numberOfVertices);
+    adjacencyMatrix = readEdgePairs(secondPass);
     
     secondPass.close();
     secondFileReader.close();
@@ -47,10 +47,10 @@ class ASPFileReader {
    * @param numberOfVertices the number of vertices in the graph 
    * @return Adjacency matrix of the graph as described in this doc
    */
-  private int[][] readEdgePairs(BufferedReader reader, int numberOfVertices)
+  private int[][] readEdgePairs(BufferedReader reader)
       throws IOException{
 
-    int[][] adjacencyMatrix = new int[numberOfVertices + 1][numberOfVertices + 1];
+    int[][] adjacencyMatrix = new int[1000][1000];
     
     reader.readLine(); // Ignore starting vertex line
     reader.readLine(); // Ignore ending vertex line
@@ -119,8 +119,8 @@ class ASPFileReader {
    * Get the number of vertices in the graph
    * @return Number of vertices in the graph
    */
-  Integer getNumberOfVertices() {
-    return numberOfVertices;
+  Integer getLargestVertex() {
+    return largestVertex;
   }
   
   /***
