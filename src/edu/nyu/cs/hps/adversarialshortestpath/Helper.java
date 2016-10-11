@@ -18,7 +18,7 @@ public class Helper {
         return adjacentTable;
     }
 
-    public static int countBridges(int[][] map, Set<Integer> startSet, Set<Integer> endSet){
+    public static int countBridges(long[][] map, Set<Integer> startSet, Set<Integer> endSet){
         int count = 0;
         for(Integer i : startSet){
             for(Integer j : endSet){

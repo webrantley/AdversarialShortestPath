@@ -1,5 +1,6 @@
 package edu.nyu.cs.hps.adversarialshortestpath;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,7 +27,7 @@ class GameController {
   private Socket gameSocket;
   private PrintWriter outputStream;
   private BufferedReader inputStream;
-  private final ASPAI gameAI = null;
+  private ASPAI gameAI = null;
   
   GameController(Integer portNumber, String playType) throws IOException {
     this.portNumber = portNumber;
@@ -38,31 +39,15 @@ class GameController {
     
     if ("Player".equals(playType)) {
       //Remove comments and replace ASPPlayer with name of your class
-      //gameAI = new ASPPlayer();
+      gameAI = new PlayerAI();
+      gameAI.setGameController(this);
+      System.out.println(adjacencyMatrix.length);
+      writeToSocket(gameAI.makeMove("-1 -1 -1"));
     } else if ("Adversary".equals(playType)) {
       //Remove comments and replace ASPAdversary with name of your class
-      //gameAI = new ASPAdversary();
-    } else {
-      throw new IllegalArgumentException("Unrecognized play type. Use Player or Adversary");
-    }
-    
-    listenForMoves();
-  }
-  
-  GameController(String playType) throws IOException {
-    portNumber = 5000;
-    connectToSocket();
-    startingVertex = Integer.parseInt(inputStream.readLine().split(": ")[1]);
-    endingVertex = Integer.parseInt(inputStream.readLine().split(": ")[1]);
-    inputStream.readLine(); // Skip Edges: line
-    adjacencyMatrix = parseGraphData();
-    
-    if ("Player".equals(playType)) {
-      //Remove comments and replace ASPPlayer with name of your class
-      //gameAI = new ASPPlayer();
-    } else if ("Adversary".equals(playType)) {
-      //Remove comments and replace ASPAdversary with name of your class
-      //gameAI = new ASPAdversary();
+      gameAI = new AdversaryAI();
+      gameAI.setGameController(this);
+      System.out.println(adjacencyMatrix.length);
     } else {
       throw new IllegalArgumentException("Unrecognized play type. Use Player or Adversary");
     }
@@ -82,12 +67,16 @@ class GameController {
   }
   
   private void listenForMoves() throws IOException {
-    char[] incomingString = new char[1024];
+    char[] incomingString;
     String updateFromServer = null;
     
     while (!"$".equals(updateFromServer)) {
+      incomingString = new char[1024];
       inputStream.read(incomingString, 0, 1024);
       updateFromServer = new String(incomingString).trim();
+      if("$".equals(updateFromServer)){
+        break;
+      }
       writeToSocket(gameAI.makeMove(updateFromServer));
     }
     

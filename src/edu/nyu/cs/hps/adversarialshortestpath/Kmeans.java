@@ -6,11 +6,11 @@ import java.util.Set;
 
 public class Kmeans {
     int n;
-    int[][] map;
+    long[][] map;
     Set<Integer> startSet;
     Set<Integer> endSet;
 
-    public Kmeans(int[][] map){
+    public Kmeans(long[][] map){
         n = map.length;
         this.map = map.clone();
         startSet = new HashSet<>();

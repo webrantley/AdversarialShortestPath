@@ -1,5 +1,6 @@
 package edu.nyu.cs.hps.adversarialshortestpath;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,9 +8,9 @@ import java.util.Set;
 
 public class ShortestPathAlgorithm {
 
-    public static int[][] floyd(int[][] adjacencyMatrix) {
+    public static long[][] floyd(long[][] adjacencyMatrix) {
         int n = adjacencyMatrix.length;
-        int[][] d = new int[n][n];
+        long[][] d = new long[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 d[i][j] = adjacencyMatrix[i][j];
@@ -29,9 +30,9 @@ public class ShortestPathAlgorithm {
         return d;
     }
 
-    public static ArrayList<HashSet<Integer>> dijkstra(int[][] map, int s){
+    public static ArrayList<HashSet<Integer>> dijkstra(long[][] map, int s){
         int n = map.length;
-        int[] edges = Arrays.copyOf(map[s],n);
+        long[] edges = Arrays.copyOf(map[s],n);
         ArrayList<HashSet<Integer>> prevs = new ArrayList<>();
         for(int i = 0; i < n; i++){
             HashSet<Integer> prev = new HashSet<>();
@@ -60,7 +61,7 @@ public class ShortestPathAlgorithm {
                 }
             }
 
-            int minDis = Integer.MAX_VALUE;
+            long minDis = Integer.MAX_VALUE;
             boolean breakFlag = true;
             for(Integer i : unfinishedSet){
                 if(edges[i] < minDis && edges[i] != 0){

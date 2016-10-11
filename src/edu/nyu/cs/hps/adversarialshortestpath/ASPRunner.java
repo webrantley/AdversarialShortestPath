@@ -7,12 +7,13 @@ public class ASPRunner {
   // ASPRunner Adversary/Player PortNumber
   
   public static void main(String[] args) throws IOException {
-    if ("Player".equals(args[0])) {
-      new GameController(args[0]);
+    GameController gameController = null;
+    if ("Player".equals(args[1])) {
+      gameController = new GameController(Integer.valueOf(args[0]),args[1]);
       //Create player AI
-    } else if ("Adversary".equals(args[0])) {
+    } else if ("Adversary".equals(args[1])) {
       //Create Adversary AI
-      new GameController(args[0]);
+      gameController = new GameController(Integer.valueOf(args[0]),args[1]);
     } else {
       System.out.println("Unknown command line argument. Specify Player or Adversary");
     }
